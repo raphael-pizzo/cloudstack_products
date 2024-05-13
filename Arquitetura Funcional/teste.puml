@@ -1,13 +1,35 @@
-@startuml primeiro
+@startuml visão geral
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-System(systemAlias, "Sistema Exemplo", "Sistema para ilustrar o C4Model")
+System(cloudStack, "CloudStack", "CloudStack")
+System(apiGatewaySystem, "API Gateway", "Gerenciador de APIs")
+System_Ext(CLI, "CLI - LWSA", "Sistema de Linha de Comando LWSA")
+System_Ext(lwsaCloudConsole, "LWSA Cloud Console", "Console Integrado de Cloud da LWSA")
+System(identityProvider, "KeyCloack", "identity Provider")
+System(lwsaCloudPlataform, "lwsaCloudPlataform", "lwsaCloudPlataform")
+System_Ext(minio, "MIN.IO", "LWSA Cloud Storage")
+System_Ext(galeraCluster, "LWSA DataBase Cluster", "Cluster de banco de dados da LWSA")
+System_Ext(openSearch, "LWSA Search Engine", "LWSA Search Engine")
+System_Ext(kubernets, "LWSA Compute", "Cluster de banco de dados da LWSA")
+System_Ext(redis, "LWSA Cache", "Cluster de banco de dados da LWSA")
+System_Ext(kafka, "LWSA Events", "Events as a Service")
 
 Person(userAlias, "Usuário", "Usuário do sistema")
-
-System_Ext(system2Alias, "Sistema Externo", "Outro sistema relacionado")
-
-Rel(userAlias, systemAlias, "Interage com")
-Rel(systemAlias, system2Alias, "Se comunica com")
+Rel(userAlias, CLI, "Interage com")
+Rel(CLI, identityProvider, "Solicita Credenciais")
+Rel(CLI, apiGatewaySystem, "Delega ao")
+Rel(lwsaCloudConsole, identityProvider, "Solicita Credenciais")
+Rel(lwsaCloudConsole, apiGatewaySystem, "Delega ao")
+Rel(apiGatewaySystem, identityProvider, "Solicita Autorização")
+Rel(apiGatewaySystem, lwsaCloudPlataform, "Interage com  - Mapping de todos os Paths")
+Rel(lwsaCloudPlataform, cloudStack, "Interage com")
+Rel(apiGatewaySystem, cloudStack, "Interage com - Mapping de todos os Paths")
+Rel(userAlias, lwsaCloudConsole, "Interage com")
+Rel(lwsaCloudPlataform, minio, "Provisiona")
+Rel(lwsaCloudPlataform, galeraCluster, "Provisiona")
+Rel(lwsaCloudPlataform, openSearch, "Provisiona")
+Rel(lwsaCloudPlataform, kubernets, "Provisiona")
+Rel(lwsaCloudPlataform, kafka, "Provisiona")
+Rel(lwsaCloudPlataform, redis, "Provisiona")
 
 @enduml
