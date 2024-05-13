@@ -1,0 +1,13 @@
+@startuml primeiro
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+System(systemAlias, "Sistema Exemplo", "Sistema para ilustrar o C4Model")
+
+Person(userAlias, "Usuário", "Usuário do sistema")
+
+System_Ext(system2Alias, "Sistema Externo", "Outro sistema relacionado")
+
+Rel(userAlias, systemAlias, "Interage com")
+Rel(systemAlias, system2Alias, "Se comunica com")
+
+@enduml
